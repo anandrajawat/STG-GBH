@@ -71,3 +71,4 @@ optimization:
   target_fpr_max: 0.02 # FPR <= 2%
   target_fnr_max: 0.02 # FNR <= 2%
   optuna_trials: 30
+

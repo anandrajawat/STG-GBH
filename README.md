@@ -26,7 +26,7 @@
 Modern enterprise and industrial IoT environments confront sophisticated, multi-stage cyber attack campaigns that evade static per-flow machine learning classifiers. While **Graph Neural Networks (GNNs)** excel at modeling structural endpoint dependencies and **Gradient Boosted Decision Trees (GBDTs)** dominate dense tabular telemetry, prior hybrid methods suffer from subtle data leakage, rigid feature coupling, extreme false alarm rates under severe class imbalance, and cross-domain generalization failure.
 
 **STG-GBH** (*Spatio-Temporal Graph and Boosting Hybrid*) solves these fundamental problems through a decoupled architectural design:
-1. **Stabilized Heterogeneous GraphSAGE Branch:** Inductive message passing over dynamic session graphs ($\mathcal{G}_t$) with element-wise $\operatorname{asinh}$ input stabilization and residual skip projections.
+1. **Stabilized Heterogeneous GraphSAGE Branch:** Inductive message passing over dynamic session graphs ($\mathcal{G}_t$) with element-wise `asinh` input stabilization and residual skip projections.
 2. **Causal Temporal GRU Recurrence:** Unidirectional sequence recurrence over historical snapshots guaranteeing zero future-lookahead leakage.
 3. **Residual Additive Temporal Attention:** Adaptive attention pooling dynamically scoring suspicious historical interaction windows.
 4. **50-Block Leakage-Free OOF Stacking Ensemble:** Meta-classifier combining independently Optuna-tuned XGBoost, CatBoost, and LightGBM models via interleaved log-odds out-of-sample cross-validation.
@@ -123,7 +123,7 @@ STG-GBH/
 
 ### 1. Input Feature Stabilization
 Continuous telemetry features span multiple orders of magnitude with heavy-tailed distributions. We apply an element-wise inverse hyperbolic sine transformation:
-$$\tilde{\mathbf{x}}_v = \operatorname{asinh}(\mathbf{x}_v) = \log\left(\mathbf{x}_v + \sqrt{\mathbf{x}_v^2 + 1}\right)$$
+$$\tilde{\mathbf{x}}_v = \text{asinh}(\mathbf{x}_v) = \log\left(\mathbf{x}_v + \sqrt{\mathbf{x}_v^2 + 1}\right)$$
 
 ### 2. Stabilized Heterogeneous GraphSAGE Message Passing
 Dynamic graph $\mathcal{G}_t = (\mathcal{V}_t, \mathcal{E}_t, \mathbf{X}_t)$ captures interacting endpoints, transport protocols, and flows. Node representations $\mathbf{h}_v^{(l)}$ at layer $l \in \{1, 2\}$ are computed inductively with residual skip projections:
@@ -131,15 +131,15 @@ $$\mathbf{h}_{v}^{(l)} = \sigma \left( \mathbf{W}_{\text{self}}^{(l)} \mathbf{h}
 
 ### 3. Causal Unidirectional GRU Recurrence
 For each flow entity across historical sequence windows $\tau \in \{1, \dots, L\}$:
-$$\mathbf{s}_{v, \tau} = \operatorname{GRU}\left(\mathbf{h}_{v, \tau}^{(2)}, \mathbf{s}_{v, \tau-1}\right)$$
+$$\mathbf{s}_{v, \tau} = \text{GRU}\left(\mathbf{h}_{v, \tau}^{(2)}, \mathbf{s}_{v, \tau-1}\right)$$
 
 ### 4. Residual Additive Temporal Attention Pooling
-$$\alpha_{v, \tau} = \frac{\exp\left(\mathbf{v}_a^\top \tanh(\mathbf{W}_a \mathbf{s}_{v, \tau})\right)}{\sum_{k=1}^L \exp\left(\mathbf{v}_a^\top \tanh(\mathbf{W}_a \mathbf{s}_{v, k})\right)}, \quad \mathbf{h}_{\text{graph}} = \operatorname{LayerNorm}\left(\mathbf{s}_{v, L} + \frac{1}{2}\sum_{\tau=1}^L \alpha_{v, \tau} \mathbf{s}_{v, \tau}\right)$$
+$$\alpha_{v, \tau} = \frac{\exp\left(\mathbf{v}_a^\top \tanh(\mathbf{W}_a \mathbf{s}_{v, \tau})\right)}{\sum_{k=1}^L \exp\left(\mathbf{v}_a^\top \tanh(\mathbf{W}_a \mathbf{s}_{v, k})\right)}, \quad \mathbf{h}_{\text{graph}} = \text{LayerNorm}\left(\mathbf{s}_{v, L} + \frac{1}{2}\sum_{\tau=1}^L \alpha_{v, \tau} \mathbf{s}_{v, \tau}\right)$$
 
 ### 5. Log-Odds Skip & Bounded Residual Fusion Head
 Let $\mathbf{p}_{\text{ens}}$ denote the out-of-fold stacked ensemble probability. The unbounded log-odds transformation is:
 $$\boldsymbol{\ell}_{\text{boost}} = \log\left(\frac{\mathbf{p}_{\text{ens}}}{1 - \mathbf{p}_{\text{ens}}}\right)$$
-$$\text{logits}_t = \mathbf{W}_{\text{skip}} \boldsymbol{\ell}_{\text{boost}} + \gamma \tanh\left(\operatorname{MLP}_{\text{fusion}}\left(\left[\mathbf{h}_{\text{graph}} \parallel \mathbf{p}_{\text{ens}} \parallel \boldsymbol{\ell}_{\text{boost}}\right]\right)\right)$$
+$$\text{logits}_t = \mathbf{W}_{\text{skip}} \boldsymbol{\ell}_{\text{boost}} + \gamma \tanh\left(\text{MLP}_{\text{fusion}}\left(\left[\mathbf{h}_{\text{graph}} \parallel \mathbf{p}_{\text{ens}} \parallel \boldsymbol{\ell}_{\text{boost}}\right]\right)\right)$$
 where $\gamma = 0.5$ guarantees that topological graph noise cannot override unanimous, high-confidence boosting decisions.
 
 ### 6. Uncertainty-Weighted Multi-Task Loss Balancing
@@ -242,7 +242,7 @@ All figures are generated in 300 DPI publication quality in `results/figures/`:
 STG-GBH enforces **14 strict data leakage safeguards** verified by automated unit tests:
 1. **Chronological Horizon Splitting:** Time-ordered splits ($T_1 \le T_2 \le T_3$) prevent future-packet leakage.
 2. **Embargo Buffers:** 60-flow embargo periods between splits absorb session bleed.
-3. **Session-Bounded Causal Rolling:** Rolling window features use strictly historical observations ($\operatorname{shift}(1)$) bounded by `session_id`.
+3. **Session-Bounded Causal Rolling:** Rolling window features use strictly historical observations (`shift(1)`) bounded by `session_id`.
 4. **Cross-Split Hash Purging:** MD5 feature hashes ensure zero duplicate flow contamination across splits.
 5. **Train-Only Parameter Fitting:** Median imputers and robust scalers are fitted exclusively on training records ($T_1$).
 6. **No Target-Derived Features:** Attack labels, attack names, and annotations are excluded from model inputs.
