@@ -1,0 +1,73 @@
+# ==============================================================================
+# STG-GBH Default Pipeline Configuration
+# ==============================================================================
+
+pipeline:
+  seed: 42
+  embargo_flows: 60
+  time_windows_minutes: [5, 15, 30, 60]
+  selected_window_minutes: 60
+  sequence_length: 12
+
+preprocessing:
+  input_stabilization: "asinh" # asinh(x) = log(x + sqrt(x^2 + 1))
+  deduplicate_hashes: true
+  imputation_strategy: "median"
+  scaling_strategy: "robust"
+  train_only_fit: true
+
+models:
+  graphsage:
+    in_dim: 128
+    hidden_dim: 128
+    out_dim: 128
+    num_layers: 2
+    dropout: 0.2
+    aggregator: "mean"
+    learning_rate: 0.001
+    weight_decay: 1.0e-5
+
+  gru:
+    input_dim: 128
+    hidden_dim: 128
+    num_layers: 1
+    dropout: 0.2
+    bidirectional: false # Causal temporal modeling only
+
+  attention:
+    attention_type: "additive" # "additive", "dot_product", "mean", "max"
+    hidden_dim: 64
+
+  boosting:
+    xgboost:
+      n_estimators: 800
+      max_depth: 6
+      learning_rate: 0.05
+      subsample: 0.8
+      colsample_bytree: 0.8
+    catboost:
+      iterations: 800
+      depth: 6
+      learning_rate: 0.05
+      l2_leaf_reg: 3.0
+    lightgbm:
+      n_estimators: 800
+      max_depth: 6
+      learning_rate: 0.05
+      num_leaves: 31
+      subsample: 0.8
+
+  stacking:
+    num_blocks: 50
+    interleaved: true
+    meta_features: "log_odds"
+
+  fusion:
+    gamma_bound: 0.5
+    mlp_hidden: [128, 64]
+    dropout: 0.1
+
+optimization:
+  target_fpr_max: 0.02 # FPR <= 2%
+  target_fnr_max: 0.02 # FNR <= 2%
+  optuna_trials: 30

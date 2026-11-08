@@ -1,0 +1,13 @@
+Model Architecture,Accuracy (%),Precision (%),Recall (%),Macro-F1 (%),ROC-AUC (%),PR-AUC (%),FPR (%),FNR (%),Train Time (s),Latency/1k (ms)
+Random Forest,98.71,98.7,97.19,98.5,99.94,99.87,0.59,2.81,9.27,8.077
+XGBoost alone,98.89,98.09,98.4,98.72,99.97,99.93,0.88,1.6,4.89,2.69
+CatBoost alone,99.48,98.86,99.49,99.39,99.98,99.96,0.53,0.51,3.21,0.794
+LightGBM alone,98.75,97.65,98.4,98.56,99.96,99.9,1.09,1.6,1.67,6.087
+XGBoost plus CatBoost,99.3,98.3,99.49,99.19,99.98,99.95,0.79,0.51,N/A,N/A
+XGBoost plus LightGBM,98.81,97.72,98.53,98.63,99.97,99.92,1.06,1.47,N/A,N/A
+CatBoost plus LightGBM,99.17,97.86,99.55,99.05,99.97,99.94,1.0,0.45,N/A,N/A
+Three Model Soft Voting,98.87,97.9,98.53,98.7,99.97,99.94,0.97,1.47,N/A,N/A
+OOF Stacking Ensemble,99.3,98.23,99.55,99.19,99.98,99.96,0.82,0.45,47.02,17.236
+GraphSAGE GRU Attention alone,99.28,98.29,99.42,99.16,99.87,99.62,0.79,0.58,N/A,N/A
+STG GBH Default Threshold,99.64,99.05,99.81,99.58,99.97,99.94,0.44,0.19,50.2,N/A
+STG GBH Optimal Threshold,99.64,99.05,99.81,99.58,99.97,99.94,0.44,0.19,50.2,0.963

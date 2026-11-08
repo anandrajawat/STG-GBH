@@ -1,0 +1,103 @@
+# ==============================================================================
+# STG-GBH .gitignore
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# Raw Large Benchmark Datasets (>2.7 GB)
+# Refer to datasets/README.md for download instructions
+# ------------------------------------------------------------------------------
+datasets/CSE_CIC_IDS2018/*.parquet
+datasets/CIC_IDS2017/*.parquet
+datasets/Edge_IIoTset/Edge-IIoTset dataset/
+datasets/Edge_IIoTset/*.pdf
+datasets/CICIoT2023/wataiData/
+datasets/ToN_IoT/*.csv
+datasets/ToN_IoT/*.parquet
+
+# Keep datasets README & directory structure
+!datasets/**/README.md
+!datasets/README.md
+
+# ------------------------------------------------------------------------------
+# Python bytecode & environments
+# ------------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# ------------------------------------------------------------------------------
+# Testing & Profiling
+# ------------------------------------------------------------------------------
+.pytest_cache/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+htmlcov/
+
+# ------------------------------------------------------------------------------
+# Model Training Run Scratch & Logs
+# ------------------------------------------------------------------------------
+catboost_info/
+*.log
+
+# ------------------------------------------------------------------------------
+# LaTeX Build Intermediates (Preserve source .tex and final .pdf)
+# ------------------------------------------------------------------------------
+*.aux
+*.bbl
+*.blg
+*.brf
+*.fls
+*.fdb_latexmk
+*.idx
+*.ilg
+*.ind
+*.lof
+*.lot
+*.nav
+*.out
+*.snm
+*.toc
+*.xdv
+*.synctex.gz
+
+# ------------------------------------------------------------------------------
+# Operating System & IDE Files
+# ------------------------------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*~

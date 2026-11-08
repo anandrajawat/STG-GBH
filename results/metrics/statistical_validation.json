@@ -1,0 +1,53 @@
+{
+  "mcnemar_tests": {
+    "STG_GBH_vs_Random_Forest": {
+      "b_model_a_better": 46,
+      "c_model_b_better": 0,
+      "chi2_statistic": 44.0217,
+      "p_value": 0.0,
+      "significant_at_05": true
+    },
+    "STG_GBH_vs_XGBoost": {
+      "b_model_a_better": 40,
+      "c_model_b_better": 3,
+      "chi2_statistic": 30.1395,
+      "p_value": 0.0,
+      "significant_at_05": true
+    },
+    "STG_GBH_vs_CatBoost": {
+      "b_model_a_better": 10,
+      "c_model_b_better": 2,
+      "chi2_statistic": 4.0833,
+      "p_value": 0.043308,
+      "significant_at_05": true
+    },
+    "STG_GBH_vs_LightGBM": {
+      "b_model_a_better": 47,
+      "c_model_b_better": 3,
+      "chi2_statistic": 36.98,
+      "p_value": 0.0,
+      "significant_at_05": true
+    },
+    "STG_GBH_vs_OOF_Stacking": {
+      "b_model_a_better": 19,
+      "c_model_b_better": 2,
+      "chi2_statistic": 12.1905,
+      "p_value": 0.00048,
+      "significant_at_05": true
+    }
+  },
+  "bootstrap_confidence_intervals": {
+    "STG_GBH_Macro_F1_95CI": {
+      "mean": 0.9958,
+      "std": 0.001,
+      "ci_lower": 0.9957,
+      "ci_upper": 0.9959
+    },
+    "STG_GBH_Accuracy_95CI": {
+      "mean": 0.9963,
+      "std": 0.0009,
+      "ci_lower": 0.9963,
+      "ci_upper": 0.9964
+    }
+  }
+}

@@ -1,0 +1,6 @@
+Hypothesis Comparison,Chi2 Statistic,p-Value,Statistically Significant (p < 0.05),STG-GBH Superior Cases,Baseline Superior Cases
+STG GBH vs Random Forest,44.0217,0.0,True,46,0
+STG GBH vs XGBoost,30.1395,0.0,True,40,3
+STG GBH vs CatBoost,4.0833,0.043308,True,10,2
+STG GBH vs LightGBM,36.98,0.0,True,47,3
+STG GBH vs OOF Stacking,12.1905,0.00048,True,19,2
